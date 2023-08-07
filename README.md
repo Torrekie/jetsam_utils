@@ -1,10 +1,13 @@
 # overb0ard
 
-**iOS and macOS share a program: jetsam.** The tl;dr is that jetsam monitors memory usage, asks for memory when there isn't much free, and kills other programs that don't give back as much as was requested. This tool--a continuation from conradev's jetsamctl--serves to override the strict limits that jetsam sets on iOS devices with a simple command. All you need is a device with iOS 6 or later.
+**iOS and macOS share a program: jetsam.** The tl;dr is that jetsam monitors memory usage, asks for memory when there isn't much free, and kills other programs that don't give back as much as was requested. This tool--a continuation from conradev's jetsamctl--serves to override the strict limits that jetsam sets on iOS devices with a simple command. All you need is a device with iOS 12 or later.
 
 ### Installation
 
-The latest Debian package can be downloaded from my [Cydia Repository](https://doregon.github.io/cydia) in the System section.
+```
+$ make package
+$ dpkg -i ./package/*
+```
 
 ### Usage
 
