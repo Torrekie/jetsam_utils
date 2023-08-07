@@ -1,13 +1,13 @@
 Package: com.doregon.overb0ard
 Name: overb0ard
-Depends: firmware (>= 6.0)
-Conflicts: com.doregon.overb0ard-dev, com.kramerapps.jetsamctl
-Replaces: com.kramerapps.jetsamctl
-Version: 1.0.3
+Depends: firmware (>= 12.0)
+Multi-Arch: foreign
+Provides: com.doregon.overb0ard-dev (= 1.0.4), com.kramerapps.jetsamctl (= 1.0.4), jetsamctl (= 1.0.4)
+Conflicts: com.doregon.overb0ard-dev, com.kramerapps.jetsamctl, jetsamctl
+Replaces: com.doregon.overb0ard-dev, com.kramerapps.jetsamctl, jetsamctl
+Version: 1.0.4
 Architecture: iphoneos-arm
-Description: Take control of your device's memory.
-Maintainer: Adam Tunnic <tunnic.adam@gmail.com>
+Description: Take control of your device's memory. installed as command `jetsamctl'.
+Maintainer: Torrekie <me@torrekie.dev>
 Author: Adam Tunnic <tunnic.adam@gmail.com>
-Depiction: https://doregon.github.io/json-webviews/?json=https://doregon.github.io/cydia/depictions/natives/com.doregon.overb0ard.json&name=overb0ard&dev=Adam%20Tunnic&section=System
-SileoDepiction: https://doregon.github.io/cydia/depictions/natives/com.doregon.overb0ard.json
 Section: System
