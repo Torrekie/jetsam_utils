@@ -62,12 +62,12 @@ int verbose_printf(const char * restrict fmt, ...) {
 }
 
 const char *strprio(int prio) {
-    const char *ret;
+    char *ret;
 
     if (prio > (sizeof(priority_str) / sizeof(priority_str[0]))) {
         sprintf(ret, "%d", prio);
     } else {
-        ret = priority_str[prio];
+        ret = (char *)priority_str[prio];
     }
 
     return ret;
@@ -78,6 +78,7 @@ int main(int argc, const char * argv[]) {
     setuid(0);
 
     char *endptr;
+    bool found = false;
 
     static const char *usage = "Usage: %s [-l limit] [-s set] [-p priority] [-v] processes\nSee https://github.com/Torrekie/overb0ard for more information.\n";
 
@@ -134,8 +135,10 @@ int main(int argc, const char * argv[]) {
 //        proc_list[i - optind] = argv[i];
         char *process = (char *)argv[i];
         pid = strtoimax(process, &endptr, 0);
+
         // If recieved procname, try to get all PID with this name
         if (process == endptr || *endptr != '\0') {
+            if (found) found = false;
             int mib[4] = {CTL_KERN, KERN_PROC, KERN_PROC_ALL, 0};
 
             size_t all_proc_size;
@@ -159,33 +162,37 @@ int main(int argc, const char * argv[]) {
             }
 
             // Find all pids with procname
-            for (int j; j < all_proc_size / sizeof(struct kinfo_proc); j++) {
+            for (int j = 0; j < all_proc_size / sizeof(struct kinfo_proc); j++) {
                 if (strcmp(processes[j].kp_proc.p_comm, process) == 0) {
                     pid = processes[j].kp_proc.p_pid;
                     if (pid == 0) {
                         fprintf(stderr, "%s: warning: cannot get pid of process `%s' (%s)\n", overb0ard, process, strerror(ESRCH));
                         continue;
                     }
-                    if (pid_list_len > pid_list_size) {
+                    if (pid_list_len >= pid_list_size) {
                         pid_list_size *= 2;
-                        pid_t *alloc = malloc(pid_list_size * sizeof(pid_t));
+                        pid_t *alloc =realloc(pid_list, pid_list_size * sizeof(pid_t));
                         if (alloc == NULL) {
-                            fprintf(stderr, "%s: malloc failed with error: %s\n", overb0ard, strerror(errno));
+                            fprintf(stderr, "%s: realloc failed with error: %s\n", overb0ard, strerror(errno));
                             goto free;
                         }
                         pid_list = alloc;
                     }
                     pid_list[pid_list_len] = pid;
                     pid_list_len++;
+                    if (!found) found = true;
+                    verbose_printf("%s: found process PID of `%s': %d\n", overb0ard, process, pid);
                 }
             }
+            if (!found)
+                fprintf(stderr, "%s: warning: cannot find process PID of `%s' (%s)\n", overb0ard, process, strerror(ESRCH));
         } else {
             // Otherwise user is providing PID
             if (pid_list_len > pid_list_size) {
                 pid_list_size *= 2;
-                pid_t *alloc = malloc(pid_list_size * sizeof(pid_t));
+                pid_t *alloc = realloc(pid_list, pid_list_size * sizeof(pid_t));
                 if (alloc == NULL) {
-                    fprintf(stderr, "%s: malloc failed with error: %s\n", overb0ard, strerror(errno));
+                    fprintf(stderr, "%s: realloc failed with error: %s\n", overb0ard, strerror(errno));
                     goto free;
                 }
                 pid_list = alloc;
