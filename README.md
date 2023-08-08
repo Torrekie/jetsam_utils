@@ -45,6 +45,19 @@ Here is a table of all of the priorities and their numerical values. A lower pri
 | Important | 18 | |
 | Critical | 19 | |
 
+### TODO
+
+#### Jetsam Operations
+- [ ] Get/Set/Reset process "managed" status
+- [ ] Enable/Disable Jetsam "lenient" mode
+- [ ] Set/Reset task's status as a privileged listener w.r.t memory notifications
+- [ ] Get/Set/Reset process freezable state
+
+#### Jetsamctl abilities
+- [ ] Operate by process user/group/status/workingdir/parent/child
+- [x] Operate by process name/PID
+- [ ] Run as launchctl daemons (jetsamctld?)
+- [ ] config files
 
 ## License
 
