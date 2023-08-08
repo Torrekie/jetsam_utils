@@ -59,6 +59,10 @@ Here is a table of all of the priorities and their numerical values. A lower pri
 - [ ] Run as launchctl daemons (jetsamctld?)
 - [ ] config files
 
+#### Misc
+- [ ] Manual page
+- [ ] Localizations
+
 ## License
 
 `jetsamctl` is available under the MIT license. See the LICENSE file for more info.
