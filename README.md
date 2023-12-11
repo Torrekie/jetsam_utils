@@ -1,6 +1,6 @@
-# overb0ard
+# jetsam utils
 
-**iOS and macOS share a program: jetsam.** The tl;dr is that jetsam monitors memory usage, asks for memory when there isn't much free, and kills other programs that don't give back as much as was requested. This tool--a continuation from conradev's jetsamctl--serves to override the strict limits that jetsam sets on iOS devices with a simple command. All you need is a device with iOS 12 or later.
+**iOS and macOS share a program: jetsam.** The tl;dr is that jetsam monitors memory usage, asks for memory when there isn't much free, and kills other programs that don't give back as much as was requested. This tool--a continuation from conradev's jetsamctl--serves to override the strict limits that jetsam sets on iOS devices with a simple command. All you need is a device with jailbroken iOS 12 - iOS 14.
 
 ### Installation
 
@@ -25,25 +25,34 @@ jetsamctl -p 8 MobileSlideShow
 
 ### Priorities
 
-Here is a table of all of the priorities and their numerical values. A lower priority value obviously means that jetsam will bother it more.
+Here is a table of all of the priorities and their numerical values (Before macOS 13/ iOS 16). A lower priority value obviously means that jetsam will bother it more.
 
-| Priority | Value | Examples |
-|:--|:--:|:--:|
-| Idle | 0 | |
-| Idle (Deferred) | 1 | |
-| Background (Opportunistic) | 2 | |
-| Background | 3 | |
-| Mail | 4 | Apple Mail |
-| Phone | 5 | Phone app |
-| UI Support | 8 | Keyboard extension |
-| Foreground Support | 9 | Share extension |
-| Foreground | 10 | Foreground application |
-| Audio and Accessory | 12 | |
-| Conductor | 13 | |
-| Home | 16 | SpringBoard |
-| Executive | 17 | |
-| Important | 18 | |
-| Critical | 19 | |
+| Priority | Definition | Value | Examples |
+|:--|:--:|:--:|:--:|
+| Idle (Head) | `JETSAM_PRIORITY_IDLE_HEAD` | -2 | |
+| Default | | -1 | |
+| Idle | `JETSAM_PRIORITY_IDLE` | 0 | |
+| Idle (Deferred) / Aging Band 1 | `JETSAM_PRIORITY_IDLE_DEFERRED` | 1 | |
+| Background (Opportunistic) / Aging Band 2 | `JETSAM_PRIORITY_BACKGROUND_OPPORTUNISTIC` | 2 | IOAccelMemoryInfoCollector |
+| Background / Elevated Inactive | `JETSAM_PRIORITY_BACKGROUND` | 3 | Non-system extensions or daemons |
+| Mail | `JETSAM_PRIORITY_MAIL` | 4 | `com.apple.*.sync` services |
+| Phone | `JETSAM_PRIORITY_PHONE` | 5 | MobileBackup Daemon |
+| | | 6 | |
+| | | 7 | ContextStored, CoreDuetd |
+| UI Support | `JETSAM_PRIORITY_UI_SUPPORT` | 8 | Shazam, Siri, etc. |
+| Foreground Support | `JETSAM_PRIORITY_FOREGROUND_SUPPORT` | 9 | Sidecar, Spotlight, etc. |
+| Foreground | `JETSAM_PRIORITY_FOREGROUND` | 10 | Foregrounding Apps, Non-UI Extensions, Diagnostics, QuickLook |
+| | | 11 | ioupsd, notification_proxy, etc. |
+| Audio and Accessory | `JETSAM_PRIORITY_AUDIO_AND_ACCESSORY` | 12 | Bluetooth Server, MobileAccessoryUpdater |
+| Conductor | `JETSAM_PRIORITY_CONDUCTOR` | 13 | |
+| | | 14 | obiteration, softwareupdated, etc. |
+| Driver Apple | `JETSAM_PRIORITY_DRIVER_APPLE` | 15 | Siri App, chronod, etc. |
+| Home | `JETSAM_PRIORITY_HOME` | 16 | CarPlay App, SpringBoard, etc. |
+| Executive | `JETSAM_PRIORITY_EXECUTIVE` | 17 | backboardd |
+| Important / Default | `JETSAM_PRIORITY_IMPORTANT` | 18 | CacheDelete Daemon |
+| Critical / Telephony | `JETSAM_PRIORITY_CRITICAL` | 19 | CommCenter |
+| | | 20 | notifyd |
+| | | 21 | ReportCrash, WirelessStress, etc. |
 
 ### TODO
 
@@ -62,7 +71,8 @@ Here is a table of all of the priorities and their numerical values. A lower pri
 #### Misc
 - [ ] Manual page
 - [ ] Localizations
+- [ ] replace Theos with GNU Autotools or pure makefiles
 
 ## License
 
-`jetsamctl` is available under the MIT license. See the LICENSE file for more info.
+jetsam utils is available under the MIT license. See the LICENSE file for more info.
